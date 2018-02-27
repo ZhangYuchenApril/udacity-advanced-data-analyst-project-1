@@ -8,6 +8,7 @@ Created on Sun Feb 25 22:39:04 2018
 import pandas as pd
 from numpy import mean, std
 import math
+import scipy
 from scipy import stats
 
 # load data
@@ -16,24 +17,18 @@ data = pd.read_csv(file)
 n = len(data) #sample size
 factor = math.sqrt(n/(n-1)) #correction factor
 
+data["Diff (In - Con)"] = data["Incongruent"] - data["Congruent"]
+
 #mean
-Con_mean = mean(data["Congruent"])
-In_mean = mean(data["Incongruent"])
+Diff_mean = mean(data["Diff (In - Con)"])
 
 #unbiased standard deviation
-Con_std = std(data["Congruent"])*factor
-In_std = std(data["Incongruent"])*factor
+Diff_std = std(data["Diff (In - Con)"])*factor
 
-#print(factor, Con_mean, In_mean, Con_std, In_std)
-(statistic, pvalue) = stats.ttest_ind_from_stats(mean1=Con_mean, std1=Con_std, nobs1=n, 
-                                                 mean2=In_mean, std2=In_std, nobs2=n)
+t_statistics = Diff_mean/Diff_std*math.sqrt(n)
+p_value = 1 - stats.t.cdf(t_statistics, df = n-1)
 
-print ("t statistic is: ", statistic)
-print ("pvalue is: ", pvalue)
-
-# Don't assume equal population variance
-(statistic, pvalue) = stats.ttest_ind_from_stats(mean1=Con_mean, std1=Con_std, nobs1=n, 
-                                                 mean2=In_mean, std2=In_std, nobs2=n, equal_var=False)
-
-print ("t statistic is: ", statistic)
-print ("pvalue is: ", pvalue)
+sta,p = scipy.stats.ttest_1samp(data["Diff (In - Con)"], 0)
+print ("t statistics is: ", t_statistics)
+print ("p value is: ", p_value)
+print(sta,p)

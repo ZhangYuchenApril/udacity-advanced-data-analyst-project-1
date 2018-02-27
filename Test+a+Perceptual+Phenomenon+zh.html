@@ -11812,11 +11812,12 @@ div#notebook {
 $H_0: \mu_c=\mu_i$，即不同的文字条件下，参与者说出同等大小的列表中的墨色名称所化的时间无显著区别<br>
 $H_1: \mu_c≠\mu_i$，即不同的文字条件下，参与者说出同等大小的列表中的墨色名称所化的时间有显著区别<br>
 其中：<br>
-$\mu_c$: 一致文字条件下，参与者说出同等大小的列表中的墨色名称所花时间的均值<br>
-$\mu_i$: 不一致文字条件下，参与者说出同等大小的列表中的墨色名称所花时间的均值</p>
+$\mu_c$: 一致文字条件下，参与者说出同等大小的列表中的墨色名称所花时间的总体均值 
+$\mu_i$: 不一致文字条件下，参与者说出同等大小的列表中的墨色名称所花时间的总体均值</p>
 <p>执行配对样本的双尾T检验。因为样本数据集及满足以下条件：<br>
 1）样本容量小于30且总体的统计信息（标准差，均值等）未知<br>
-2）样本为配对样本：数据来自同一组参与者在不同条件下实验的结果<br>
+2）样本为配对样本：数据来自同一组参与者在不同条件下重复相同实验的结果所以是独立配对样本（可假设方差相等）<br>
+3）样本差异值大致服从正态分布（可从问题4的Probability Density图成于正态分布近似的bell curve看出）
 3）因为备择假设是两种情况：$\mu_c&gt;\mu_i$和$\mu_c&lt;\mu_i$，所以用双尾检验</p>
 
 </div>
@@ -11865,7 +11866,7 @@ $\mu_i$: 不一致文字条件下，参与者说出同等大小的列表中的�
 <td>样本标准差</td>
 <td>3.5594</td>
 <td>4.7971</td>
-<td>1.2377</td>
+<td>4.8648</td>
 </tr>
 <tr>
 <td>变异测量</td>
@@ -12151,10 +12152,10 @@ Name: coefficient of variation, dtype: float64
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>通过直方图和概率密度图可以看出： 
-1）数据呈正偏态分布 
-2）不一致文字条件所花的时间明显多于一直文字条件所花的时间 
+1）数据呈正偏态分布<br>
+2）不一致文字条件所花的时间明显多于一直文字条件所花的时间<br>
 3）一致条件组的数据集中在10到15秒之间，而不一致条件组的数据集中在20秒左右处</p>
-<p>通过三点图可以大致看出一致与不一致条件下一个人所花的时间有明显的相关性，前者用时较短的一般后者也相对较短，但是有一些异常值</p>
+<p>通过三点图可以大致看出一致与不一致条件下一个人所花的时间有明显的相关性，前者用时较短的一般后者也相对较短，但是有一些异常值，猜测可能是被试者进行测试时注意力被分散等原因。</p>
 
 </div>
 </div>
@@ -12172,20 +12173,20 @@ Name: coefficient of variation, dtype: float64
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>进行双侧t检验，置信水平设置为95%，因为是双侧检验所以两边各2.5%</p>
+<p>进行双侧t检验，置信水平设置为5%，因为是双侧检验所以两边各2.5%</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span>
 <span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
 
 <span class="c1"># load data</span>
@@ -12194,27 +12195,21 @@ Name: coefficient of variation, dtype: float64
 <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="c1">#sample size</span>
 <span class="n">factor</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="c1">#correction factor</span>
 
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;Diff (In - Con)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Incongruent&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;Congruent&quot;</span><span class="p">]</span>
+
 <span class="c1">#mean</span>
-<span class="n">Con_mean</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Congruent&quot;</span><span class="p">])</span>
-<span class="n">In_mean</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Incongruent&quot;</span><span class="p">])</span>
+<span class="n">Diff_mean</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Diff (In - Con)&quot;</span><span class="p">])</span>
 
 <span class="c1">#unbiased standard deviation</span>
-<span class="n">Con_std</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Congruent&quot;</span><span class="p">])</span><span class="o">*</span><span class="n">factor</span>
-<span class="n">In_std</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Incongruent&quot;</span><span class="p">])</span><span class="o">*</span><span class="n">factor</span>
+<span class="n">Diff_std</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Diff (In - Con)&quot;</span><span class="p">])</span><span class="o">*</span><span class="n">factor</span>
 
-<span class="c1">#print(factor, Con_mean, In_mean, Con_std, In_std)</span>
-<span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind_from_stats</span><span class="p">(</span><span class="n">mean1</span><span class="o">=</span><span class="n">Con_mean</span><span class="p">,</span> <span class="n">std1</span><span class="o">=</span><span class="n">Con_std</span><span class="p">,</span> <span class="n">nobs1</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> 
-                                                 <span class="n">mean2</span><span class="o">=</span><span class="n">In_mean</span><span class="p">,</span> <span class="n">std2</span><span class="o">=</span><span class="n">In_std</span><span class="p">,</span> <span class="n">nobs2</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
+<span class="n">t_statistics</span> <span class="o">=</span> <span class="n">Diff_mean</span><span class="o">/</span><span class="n">Diff_std</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">p_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">t_statistics</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;t statistic is: &quot;</span><span class="p">,</span> <span class="n">statistic</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;pvalue is: &quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
-
-<span class="c1"># Don&#39;t assume equal population variance</span>
-<span class="p">(</span><span class="n">statistic</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind_from_stats</span><span class="p">(</span><span class="n">mean1</span><span class="o">=</span><span class="n">Con_mean</span><span class="p">,</span> <span class="n">std1</span><span class="o">=</span><span class="n">Con_std</span><span class="p">,</span> <span class="n">nobs1</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> 
-                                                 <span class="n">mean2</span><span class="o">=</span><span class="n">In_mean</span><span class="p">,</span> <span class="n">std2</span><span class="o">=</span><span class="n">In_std</span><span class="p">,</span> <span class="n">nobs2</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">equal_var</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;t statistic is: &quot;</span><span class="p">,</span> <span class="n">statistic</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;pvalue is: &quot;</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">)</span>
+<span class="n">sta</span><span class="p">,</span><span class="n">p</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Diff (In - Con)&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;t statistics is: &quot;</span><span class="p">,</span> <span class="n">t_statistics</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;p value is: &quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12231,10 +12226,9 @@ Name: coefficient of variation, dtype: float64
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>t statistic is:  -6.5322505539
-pvalue is:  4.5949489623e-08
-t statistic is:  -6.5322505539
-pvalue is:  6.51016739044e-08
+<pre>t statistics is:  8.02070694411
+p value is:  2.05150029187e-08
+8.02070694411 4.10300058571e-08
 </pre>
 </div>
 </div>
@@ -12247,13 +12241,14 @@ pvalue is:  6.51016739044e-08
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>给定95%置信水平下，P值远小于0.05，所以拒绝原假设，认为不同的文字条件下，参与者说出同等大小的列表中的墨色名称所化的时间有显著区别</p>
+<p>给定$\alpha=$5%置信水平下，样本为自由度为23的配对样本，t检验统计量值为8.02，而t的临界值为$t_{\alpha/2}=+/-2.069$，t检验统计量值远大于t临界值，P值为$2.05e^{-8}$远小于$\frac{\alpha}{2}$或者python给出的p值$4.1e^{-8}$远小于$\alpha$，所以拒绝原假设，认为不同的文字条件下，参与者说出同等大小的列表中的墨色名称所花的时间有显著区别</p>
 <p>参考文献：<br>
 1). t检验维基百科<a href="https://zh.wikipedia.org/zh-cn/學生t檢驗">https://zh.wikipedia.org/zh-cn/學生t檢驗</a><br>
 2).Interactive “Directional Stroop “ Effect Experiment” (<a href="https://faculty.washington.edu/chudler/java/readyd.html">https://faculty.washington.edu/chudler/java/readyd.html</a>)<br>
 3). Statistics How To (<a href="http://www.statisticshowto.com/probability-and-statistics/t-test/">http://www.statisticshowto.com/probability-and-statistics/t-test/</a>)<br>
 4). <a href="http://www.statstutor.ac.uk/resources/uploaded/paired-t-test.pdf">http://www.statstutor.ac.uk/resources/uploaded/paired-t-test.pdf</a><br>
-5). <a href="http://lagrange.univ-lyon1.fr/docs/scipy/0.17.1/generated/scipy.stats.ttest_ind_from_stats.html">http://lagrange.univ-lyon1.fr/docs/scipy/0.17.1/generated/scipy.stats.ttest_ind_from_stats.html</a></p>
+5). <a href="http://lagrange.univ-lyon1.fr/docs/scipy/0.17.1/generated/scipy.stats.ttest_ind_from_stats.html">http://lagrange.univ-lyon1.fr/docs/scipy/0.17.1/generated/scipy.stats.ttest_ind_from_stats.html</a><br>
+6). <a href="https://github.com/ShiChJ/DAND-Basic-Materials/blob/master/P1/t-table.jpg">https://github.com/ShiChJ/DAND-Basic-Materials/blob/master/P1/t-table.jpg</a></p>
 
 </div>
 </div>
