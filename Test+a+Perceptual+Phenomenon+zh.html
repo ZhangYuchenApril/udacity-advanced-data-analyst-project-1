@@ -11816,9 +11816,12 @@ $\mu_c$: 一致文字条件下，参与者说出同等大小的列表中的墨�
 $\mu_i$: 不一致文字条件下，参与者说出同等大小的列表中的墨色名称所花时间的总体均值</p>
 <p>执行配对样本的双尾T检验。因为样本数据集及满足以下条件：<br>
 1）样本容量小于30且总体的统计信息（标准差，均值等）未知<br>
-2）样本为配对样本：数据来自同一组参与者在不同条件下重复相同实验的结果所以是独立配对样本（可假设方差相等）<br>
-3）样本差异值大致服从正态分布（可从问题4的Probability Density图成于正态分布近似的bell curve看出）
-3）因为备择假设是两种情况：$\mu_c&gt;\mu_i$和$\mu_c&lt;\mu_i$，所以用双尾检验</p>
+2）因为备择假设是两种情况： μc&gt;μi 和 μc&lt;μi ，所以用双尾检验<br>
+3）总体近似服从正态分布 
+4）自变量有两种取值：文字条件一致和不一致<br>
+5）因变量的取值是连续的<br>
+6）样本为配对样本：同一个参与者在不同文字条件下进行测试，且参与者之间相互独立（可假设方差相等）<br>
+7）因为备择假设是两种情况： μc&gt;μi 和 μc&lt;μi ，所以用双尾检验</p>
 
 </div>
 </div>
@@ -12180,7 +12183,7 @@ Name: coefficient of variation, dtype: float64
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -12203,13 +12206,9 @@ Name: coefficient of variation, dtype: float64
 <span class="c1">#unbiased standard deviation</span>
 <span class="n">Diff_std</span> <span class="o">=</span> <span class="n">std</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Diff (In - Con)&quot;</span><span class="p">])</span><span class="o">*</span><span class="n">factor</span>
 
-<span class="n">t_statistics</span> <span class="o">=</span> <span class="n">Diff_mean</span><span class="o">/</span><span class="n">Diff_std</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">p_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">stats</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">t_statistics</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="n">sta</span><span class="p">,</span><span class="n">p</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Diff (In - Con)&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">t_statistics</span><span class="p">,</span><span class="n">p_value</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_1samp</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Diff (In - Con)&quot;</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;t statistics is: &quot;</span><span class="p">,</span> <span class="n">t_statistics</span><span class="p">)</span>
 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;p value is: &quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sta</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -12227,8 +12226,7 @@ Name: coefficient of variation, dtype: float64
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>t statistics is:  8.02070694411
-p value is:  2.05150029187e-08
-8.02070694411 4.10300058571e-08
+p value is:  4.10300058571e-08
 </pre>
 </div>
 </div>
@@ -12241,14 +12239,15 @@ p value is:  2.05150029187e-08
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>给定$\alpha=$5%置信水平下，样本为自由度为23的配对样本，t检验统计量值为8.02，而t的临界值为$t_{\alpha/2}=+/-2.069$，t检验统计量值远大于t临界值，P值为$2.05e^{-8}$远小于$\frac{\alpha}{2}$或者python给出的p值$4.1e^{-8}$远小于$\alpha$，所以拒绝原假设，认为不同的文字条件下，参与者说出同等大小的列表中的墨色名称所花的时间有显著区别</p>
+<p>给定$\alpha=$5%置信水平下，样本为自由度为23的配对样本，t检验统计量值为8.02，而t的临界值为$t_{\alpha/2}=+/-2.069$，t检验统计量值远大于t临界值，P值为$4.1e^{-8}$远小于$\frac{\alpha}{2}$，所以拒绝原假设，认为不同的文字条件下，参与者说出同等大小的列表中的墨色名称所花的时间有显著区别。结果与我的预期一致。</p>
 <p>参考文献：<br>
 1). t检验维基百科<a href="https://zh.wikipedia.org/zh-cn/學生t檢驗">https://zh.wikipedia.org/zh-cn/學生t檢驗</a><br>
 2).Interactive “Directional Stroop “ Effect Experiment” (<a href="https://faculty.washington.edu/chudler/java/readyd.html">https://faculty.washington.edu/chudler/java/readyd.html</a>)<br>
 3). Statistics How To (<a href="http://www.statisticshowto.com/probability-and-statistics/t-test/">http://www.statisticshowto.com/probability-and-statistics/t-test/</a>)<br>
 4). <a href="http://www.statstutor.ac.uk/resources/uploaded/paired-t-test.pdf">http://www.statstutor.ac.uk/resources/uploaded/paired-t-test.pdf</a><br>
 5). <a href="http://lagrange.univ-lyon1.fr/docs/scipy/0.17.1/generated/scipy.stats.ttest_ind_from_stats.html">http://lagrange.univ-lyon1.fr/docs/scipy/0.17.1/generated/scipy.stats.ttest_ind_from_stats.html</a><br>
-6). <a href="https://github.com/ShiChJ/DAND-Basic-Materials/blob/master/P1/t-table.jpg">https://github.com/ShiChJ/DAND-Basic-Materials/blob/master/P1/t-table.jpg</a></p>
+6). <a href="https://github.com/ShiChJ/DAND-Basic-Materials/blob/master/P1/t-table.jpg">https://github.com/ShiChJ/DAND-Basic-Materials/blob/master/P1/t-table.jpg</a><br>
+7). <a href="http://www.csic.cornell.edu/Elrod/t-test/t-test-assumptions.html">http://www.csic.cornell.edu/Elrod/t-test/t-test-assumptions.html</a></p>
 
 </div>
 </div>
