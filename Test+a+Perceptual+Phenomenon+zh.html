@@ -12154,7 +12154,7 @@ Name: coefficient of variation, dtype: float64
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>通过直方图和概率密度图可以看出： 
+<p>通过直方图和概率密度图可以看出：<br>
 1）数据呈正偏态分布<br>
 2）不一致文字条件所花的时间明显多于一直文字条件所花的时间<br>
 3）一致条件组的数据集中在10到15秒之间，而不一致条件组的数据集中在20秒左右处</p>
@@ -12176,7 +12176,7 @@ Name: coefficient of variation, dtype: float64
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>进行双侧t检验，置信水平设置为5%，因为是双侧检验所以两边各2.5%</p>
+<p>进行双侧t检验，假设显著性水平$\alpha=5\%$，因为是双侧检验所以两边各$2.5\%$，置信水平设置为$1-\alpha=95\%$</p>
 
 </div>
 </div>
@@ -12239,7 +12239,7 @@ p value is:  4.10300058571e-08
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>给定$\alpha=$5%置信水平下，样本为自由度为23的配对样本，t检验统计量值为8.02，而t的临界值为$t_{\alpha/2}=+/-2.069$，t检验统计量值远大于t临界值，P值为$4.1e^{-8}$远小于$\frac{\alpha}{2}$，所以拒绝原假设，认为不同的文字条件下，参与者说出同等大小的列表中的墨色名称所花的时间有显著区别。结果与我的预期一致。</p>
+<p>给定$\alpha=5\%$显著性信水平下，样本为自由度为23的配对样本，t检验统计量值为8.02，而t的临界值为$t_{\alpha/2}=+/-2.069$，t检验统计量值远大于t临界值，P值为$4.1e^{-8}$远小于$\alpha$，所以拒绝原假设，认为不同的文字条件下，参与者说出同等大小的列表中的墨色名称所花的时间有显著区别。结果与我的预期一致。</p>
 <p>参考文献：<br>
 1). t检验维基百科<a href="https://zh.wikipedia.org/zh-cn/學生t檢驗">https://zh.wikipedia.org/zh-cn/學生t檢驗</a><br>
 2).Interactive “Directional Stroop “ Effect Experiment” (<a href="https://faculty.washington.edu/chudler/java/readyd.html">https://faculty.washington.edu/chudler/java/readyd.html</a>)<br>
